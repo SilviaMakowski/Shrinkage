@@ -33,7 +33,7 @@ shinyServer(function(input, output) {
         new <- dat
         new <- new[new$id==i, 1:5]
         new <- new[new$cond1==j, 1:5]
-        new <- new[1:round(0.25*nrow(new)), 1:5]
+        new <- new[1:round(input$obs*nrow(new)), 1:5]
         dat_half <- rbind(dat_half, new)
       }
     }

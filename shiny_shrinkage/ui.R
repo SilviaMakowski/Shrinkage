@@ -17,8 +17,8 @@ shinyUI(pageWithSidebar(
     sliderInput("obs", 
                 "Amount of data per subject (percentage):", 
                 min = 0, 
-                max = 100, 
-                value = 50)
+                max = 1, 
+                value = 0.5)
   ),
   
   # Show a plot of the generated distribution
