@@ -54,6 +54,7 @@ dat$c1 <- ifelse(dat$tar=="val", -0.75, 0.25)
 dat$c2 <- ifelse(dat$tar=="val" | dat$tar=="sod", -0.5, +0.5)
 dat$c3 <- ifelse(dat$tar=="dod", -0.75, 0.25)
 
+#First plot
 # Transformations
 # ... determine lambda (i.e., power coefficient); boxcox() is from MASS
 # ... ... for exact lambda
@@ -130,5 +131,4 @@ px2 <- with(df,
                          }
             )) )
 
-## new data dat2
 
