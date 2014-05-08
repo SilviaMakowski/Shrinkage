@@ -10,19 +10,19 @@ library(shiny)
 shinyUI(pageWithSidebar(
   
   # Application title
-  headerPanel("New Application"),
+  headerPanel("Spatial and attraction effects"),
   
-  # Sidebar with a slider input for number of observations
+  # Sidebar with a slider input for amount of data per subject
   sidebarPanel(
     sliderInput("obs", 
-                "Number of observations:", 
-                min = 1, 
-                max = 1000, 
-                value = 500)
+                "Amount of data per subject (percentage):", 
+                min = 0, 
+                max = 100, 
+                value = 50)
   ),
   
   # Show a plot of the generated distribution
   mainPanel(
-    plotOutput("distPlot")
+    plotOutput("effectPlot")
   )
 ))
