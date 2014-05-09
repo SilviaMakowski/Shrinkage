@@ -6,7 +6,6 @@ library(lme4)
 library(gtools)
 library(reshape)
 library(scales)
-
 library(plyr)
 library(lattice)
 
