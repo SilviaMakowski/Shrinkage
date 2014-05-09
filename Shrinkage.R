@@ -53,19 +53,6 @@ dat$c1 <- ifelse(dat$tar=="val", -0.75, 0.25)
 dat$c2 <- ifelse(dat$tar=="val" | dat$tar=="sod", -0.5, +0.5)
 dat$c3 <- ifelse(dat$tar=="dod", -0.75, 0.25)
 
-#First plot
-# Transformations
-# ... determine lambda (i.e., power coefficient); boxcox() is from MASS
-# ... ... for exact lambda
-lambdaList <- boxcox(rt ~ id*tar, data=dat)
-lambda <- lambdaList$x[which.max(lambdaList$y)]  # 0.4242424
-
-# ... alternative DVs ##### maybe later.... 
-dat$srt <- dat$rt/1000
-dat$lrt <- log(dat$rt)
-dat$qrt <- sqrt(dat$rt)         # close lambda, from boxcox: 0.424 ~ 0.5 ~ sqrt(rt)
-dat$prt <- dat$rt^(lambda)      # exact lambda
-
 ###########################
 ### Linear Mixed Models ###
 ###########################
@@ -87,16 +74,6 @@ names(m2.coef) <- c("Mean", "Spatial", "Object", "Attraction")
 
 # Within-subject OLS estimates
 df <- coef(lmList(rt ~ tar | id, data=dat))
-df.log <- coef(lmList(lrt ~ tar | id, data=dat))
-mean(df)
-cor(df)
-mean(df.log)
-cor(df.log)
-
-op <- options(digits=2)
-cor(m2.coef[, 1:4])
-sd(m2.coef)
-options(op)
 
 m2.coef$id <- factor(1:61)
 
