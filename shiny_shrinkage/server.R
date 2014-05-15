@@ -26,18 +26,18 @@ shinyServer(function(input, output) {
     ids <- unique(c$id)
     conds <- unique(c$cond1)
     
-    dat_half <- NULL
+    dat_part <- NULL
     
     for (i in ids) {
+      sub_i <- dat[dat$id==i, 1:5]
       for (j in conds) {
-        new <- dat
-        new <- new[new$id==i, 1:5]
-        new <- new[new$cond1==j, 1:5]
-        new <- new[1:round(input$obs*nrow(new)), 1:5]
-        dat_half <- rbind(dat_half, new)
+        cond_j <- sub_i[sub_i$cond1==j, 1:5]
+        rnd_subset <- cond_j[sample(c(1:nrow(cond_j)),round(input$obs*nrow(cond_j))),1:5]
+        dat_part <- rbind(dat_part, rnd_subset)
       }
     }
-    dat <- dat_half
+ 
+    dat <- dat_part
     
     names(dat)[3:4] <- c("tar", "dir")
     dat$id <- factor(dat$id)
