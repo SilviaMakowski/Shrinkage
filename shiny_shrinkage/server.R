@@ -17,7 +17,7 @@ library(plyr)
 library(lattice)
 
 load("../inst/KWDYZ.FQPM.rda")
-
+source("../inst/dotplot.RK.R")
 shinyServer(function(input, output) {
    
   output$effectPlot <- renderPlot({
@@ -112,8 +112,18 @@ shinyServer(function(input, output) {
                                panel.points(x1, y1, col="black", cex=0.7, pch=19)
                              }
                 )) )  
-    print(px1, position=c(0, 0, 0.5, 1), more=TRUE)
-    print(px2, position=c(0.5, 0, 1, 1))
+    
+    m2.ranef <- ranef(m2, postVar = TRUE)
+    names(m2.ranef[[1]])[1:4] <- c("Mean", "Spatial", "Object", "Attraction")
+    
+  
+    # Figure used in paper: order on spatial effect
+    px3 <- print(dotplot.RK(m2.ranef, refvar = 2, layout=c(1,1), scales = list(x = list(relation = 'free', rot=0), y = list(draw=FALSE)), strip = TRUE)[[1]][c(1)])
+  
+    
+    print(px3, position=c(0, 0, 0.2, 1), more=TRUE)
+    print(px1, position=c(0.25, 0, 0.6, 1), more=TRUE)
+    print(px2, position=c(0.65, 0, 1, 1))
   })
   
 })
