@@ -99,7 +99,21 @@ shinyServer(function(input, output) {
                                panel.points(x1, y1, col="black", cex=0.7, pch=19)
                              }
                 ))     )
-    
+    # Mean RT and spatial effects
+    px2 <- with(df,
+                print(xyplot(tar.spt ~ `(Intercept)`, aspect = 1,
+                             x1 = Mean, y1 = Spatial, xlab="Mean RT", ylab="Spatial Effect",
+                             panel = function(x, y, x1, y1, subscripts, ...) {
+                               panel.grid(h = -1, v = -1)
+                               x1 <- x1[subscripts]
+                               y1 <- y1[subscripts]
+                               panel.arrows(x, y, x1, y1, type = "open", length = 0.1, col="gray50", lty=1, angle = 15, ...)
+                               panel.points(x, y, col="black", cex=0.9, pch=1)
+                               panel.points(x1, y1, col="black", cex=0.7, pch=19)
+                             }
+                )) )  
+    print(px1, position=c(0, 0, 0.5, 1), more=TRUE)
+    print(px2, position=c(0.5, 0, 1, 1))
   })
   
 })
