@@ -23,6 +23,9 @@ shinyUI(pageWithSidebar(
   
   # Show a plot of the generated distribution
   mainPanel(
-    plotOutput("effectPlot")
+    tabsetPanel(
+      tabPanel("Plots for partial data", plotOutput("effectPlot")),       
+      tabPanel("Mean plot for all data", plotOutput("meanPlot"))
+    )
   )
 ))

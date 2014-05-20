@@ -18,13 +18,47 @@ library(lattice)
 
 load("../inst/KWDYZ.FQPM.rda")
 source("../inst/dotplot.RK.R")
+
+dat <- c[c$rt>150, 1:5]
+
+# Linear Mixed Model
+build_model <- function(dat){
+  model <- lmer(rt ~ 1 + c1 + c2 + c3 + (1 + c1 + c2 + c3 | id), data=dat)
+  return(model)
+}
+
+build_data <- function(dat){
+  names(dat)[3:4] <- c("tar", "dir")
+  dat$id <- factor(dat$id)
+  dat$item <- factor(dat$item) 
+  
+  # Factors  - reorder levels for conditions
+  dat$tar <- factor(dat$tar, levels=c("val", "sod", "dos", "dod")) 
+  contrasts(dat$tar)
+  
+  # Contrasts
+  # ... target factor
+  cmat <- contr.sdif(4) 
+  cmat[,3] <- -1*cmat[,3]  # invert gravity contrast
+  rownames(cmat) <- c("val", "sod", "dos", "dod")
+  colnames(cmat) <- c(".spt", ".obj", ".att")
+  contrasts(dat$tar) <- cmat
+  
+  # ... also as vectors for testing individual random effects in LMM;  alternative use of model.matrix() below
+  dat$c1 <- ifelse(dat$tar=="val", -0.75, 0.25)
+  dat$c2 <- ifelse(dat$tar=="val" | dat$tar=="sod", -0.5, +0.5)
+  dat$c3 <- ifelse(dat$tar=="dod", -0.75, 0.25)
+  return(dat)
+}
+
+
+
 shinyServer(function(input, output) {
    
-  output$effectPlot <- renderPlot({
-    dat <- c[c$rt>150, 1:5]
+  output$effectPlot <- renderPlot({ 
     
-    ids <- unique(c$id)
-    conds <- unique(c$cond1)
+    ids <- unique(dat$id)
+    conds <- unique(dat$cond1)
     
     dat_part <- NULL
     
@@ -36,51 +70,21 @@ shinyServer(function(input, output) {
         dat_part <- rbind(dat_part, rnd_subset)
       }
     }
- 
-    dat <- dat_part
     
-    names(dat)[3:4] <- c("tar", "dir")
-    dat$id <- factor(dat$id)
-    dat$item <- factor(dat$item) 
-    
-    # Factors  - reorder levels for conditions
-    dat$tar <- factor(dat$tar, levels=c("val", "sod", "dos", "dod")) 
-    contrasts(dat$tar)
-    
-    # Contrasts
-    # ... target factor
-    cmat <- contr.sdif(4) 
-    cmat[,3] <- -1*cmat[,3]  # invert gravity contrast
-    rownames(cmat) <- c("val", "sod", "dos", "dod")
-    colnames(cmat) <- c(".spt", ".obj", ".att")
-    contrasts(dat$tar) <- cmat
-    
-    # ... also as vectors for testing individual random effects in LMM;  alternative use of model.matrix() below
-    dat$c1 <- ifelse(dat$tar=="val", -0.75, 0.25)
-    dat$c2 <- ifelse(dat$tar=="val" | dat$tar=="sod", -0.5, +0.5)
-    dat$c3 <- ifelse(dat$tar=="dod", -0.75, 0.25)
-    
-    ###########################
-    ### Linear Mixed Models ###
-    ###########################
-    
-    #### DV: rt
-    # ... fully parameterized model; add correlation parameters (see Tables 1 and 2, top left)
-    print(m2 <- lmer(rt ~ 1 + c1 + c2 + c3 + (1 + c1 + c2 + c3 | id), data=dat))  
-    
-    
-    # ... splom of coefficiencts (i.e., fixed effects plus conditional modes)
+    ## Build model m2 with partial data
+    dat_part <- build_data(dat_part)
+    print(m2<- build_model(dat_part))  
     m2.coef <- unlist(coef(m2))
     dim(m2.coef) <- c(61, 4)
     m2.coef <- data.frame(m2.coef)
     names(m2.coef) <- c("Mean", "Spatial", "Object", "Attraction")
+    ## px4
+    m2.ranef <- ranef(m2, postVar = TRUE)
+    names(m2.ranef[[1]])[1:4] <- c("Mean", "Spatial", "Object", "Attraction")
     
-    ###########################################################################
-    ### Figure 3: Compare conditional modes and within-subject OLS effects  ###
-    ###########################################################################
     
     # Within-subject OLS estimates
-    df <- coef(lmList(rt ~ tar | id, data=dat))
+    df <- coef(lmList(rt ~ tar | id, data=dat_part))
     
     m2.coef$id <- factor(1:61)
     
@@ -112,18 +116,23 @@ shinyServer(function(input, output) {
                                panel.points(x1, y1, col="black", cex=0.7, pch=19)
                              }
                 )) )  
-    
-    m2.ranef <- ranef(m2, postVar = TRUE)
-    names(m2.ranef[[1]])[1:4] <- c("Mean", "Spatial", "Object", "Attraction")
-    
   
     # Figure used in paper: order on spatial effect
-    px3 <- print(dotplot.RK(m2.ranef, refvar = 2, layout=c(1,1), scales = list(x = list(relation = 'free', rot=0), y = list(draw=FALSE)), strip = TRUE)[[1]][c(1)])
-  
+    px4 <- print(dotplot.RK(m2.ranef, refvar = 2, layout=c(1,1), scales = list(x = list(relation = 'free', rot=0), y = list(draw=FALSE)), strip = TRUE)[[1]][c(1)])
     
-    print(px3, position=c(0, 0, 0.2, 1), more=TRUE)
+    print(px4, position=c(0, 0, 0.2, 1), more=TRUE)
     print(px1, position=c(0.25, 0, 0.6, 1), more=TRUE)
     print(px2, position=c(0.65, 0, 1, 1))
   })
   
+  output$meanPlot <- renderPlot({ 
+    ## Build model m1 with full data
+    dat_full <- build_data(dat)
+    m1<- build_model(dat_full)
+    ## px3
+    m1.ranef <- ranef(m1, postVar = TRUE)
+    names(m1.ranef[[1]])[1:4] <- c("Mean", "Spatial", "Object", "Attraction")
+    px3 <- print(dotplot.RK(m1.ranef, refvar = 2, layout=c(1,1), scales = list(x = list(relation = 'free', rot=0), y = list(draw=FALSE)), strip = TRUE)[[1]][c(1)])
+    print(px3, position=c(0, 0, 0.2, 1))
+    })
 })
