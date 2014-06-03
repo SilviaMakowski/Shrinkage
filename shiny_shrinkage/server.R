@@ -62,6 +62,8 @@ shinyServer(function(input, output) {
     
     dat_part <- NULL
     
+    set.seed(1)
+    
     for (i in ids) {
       sub_i <- dat[dat$id==i, 1:5]
       for (j in conds) {
