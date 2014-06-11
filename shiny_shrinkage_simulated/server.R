@@ -30,13 +30,11 @@ build_model <- function(dat){
 rnorm2 <- function(n,mean,sd) { mean+sd*scale(rnorm(n)) }
 
 means <- matrix(c(358,392,406,403), ncol=4)
-standev <- 60
-number <- 20
 
-simulate_data <- function(means, standev, number) {
+simulate_data <- function(means, standevAcross, standevWithin, number) {
   set.seed(1)
   
-  dat <- mixedDesign(W = 4, M = means, SD = standev, n = number, R=.7, long = TRUE)
+  dat <- mixedDesign(W = 4, M = means, SD = standevAcross, n = number, R=.7, long = TRUE)
  
   names(dat)<- c("id","tar","M")
   levels(dat$tar) <- c("val","sod","dos","dod")
@@ -47,7 +45,7 @@ simulate_data <- function(means, standev, number) {
     sub_i <- dat[dat$id==i, ]
     for (j in unique(sub_i[,2])){
       tar_j <- sub_i[sub_i$tar==j,]
-      r <- rnorm2(30,tar_j[,3],60)
+      r <- rnorm2(30,tar_j[,3],standevWithin)
       rmat <- matrix(c(rep(i,times=30),rep(j,times=30)),ncol=2,nrow=30)
       rmati <- cbind(rmat, r)
       dat_sim <- rbind(dat_sim, rmati)
@@ -73,7 +71,7 @@ simulate_data <- function(means, standev, number) {
 shinyServer(function(input, output) {
    
   output$effectPlot <- renderPlot({
-    dat <- simulate_data(means, input$standev, input$nsubjects)
+    dat <- simulate_data(means, input$standevAcross, input$standevWithin, input$nsubjects)
     ids <- unique(dat$id)
     conds <- unique(dat$tar)
     
