@@ -30,63 +30,93 @@ build_model <- function(dat){
 rnorm2 <- function(n,mean,sd) { mean+sd*scale(rnorm(n)) }
 
 means <- matrix(c(358,392,406,403), ncol=4)
+standevAcrossSubjects <- 60
 
-simulate_data <- function(means, standevAcross, standevWithin, number) {
-  set.seed(1)
-  
-  dat <- mixedDesign(W = 4, M = means, SD = standevAcross, n = number, R=.7, long = TRUE)
- 
-  names(dat)<- c("id","tar","M")
-  levels(dat$tar) <- c("val","sod","dos","dod")
-  
+simulate_data <- function(dat_mixed, standevWithin, numberObs) {
   dat_sim <-NULL
   
-  for (i in 1:nrow(dat)){
-    sub_i <- dat[dat$id==i, ]
+  sub_ids <- unique(dat_mixed[,1])
+  
+  # generate data for each condition based on means from mixedDesign 
+  for (i in sub_ids){
+    sub_i <- dat_mixed[dat_mixed$id==i, ]
     for (j in unique(sub_i[,2])){
       tar_j <- sub_i[sub_i$tar==j,]
-      r <- rnorm2(30,tar_j[,3],standevWithin)
-      rmat <- matrix(c(rep(i,times=30),rep(j,times=30)),ncol=2,nrow=30)
+      r <- rnorm2(numberObs,tar_j[,3],standevWithin)
+      rmat <- matrix(c(rep(i,times=numberObs),rep(j,times=numberObs)),ncol=2,nrow=numberObs)
       rmati <- cbind(rmat, r)
       dat_sim <- rbind(dat_sim, rmati)
     }
   } 
   
-  dat <- data.frame(dat_sim)
+  dat_sim <- data.frame(dat_sim)
   
-  names(dat)<- c("id","tar","rt")
-  dat$rt <- as.numeric(dat$rt)
-  dat$tar <- factor(dat$tar, levels=c("val", "sod", "dos", "dod")) 
-  contrasts(dat$tar)
+  names(dat_sim)<- c("id","tar","rt")
+  dat_sim$rt <- as.numeric(as.character(dat_sim$rt))
+  dat_sim$tar <- factor(dat_sim$tar, levels=c("val", "sod", "dos", "dod")) 
+  contrasts(dat_sim$tar)
   
   
-  # ... also as vectors for testing individual random effects in LMM;  alternative use of model.matrix() below
-  dat$c1 <- ifelse(dat$tar=="val", -0.75, 0.25)
-  dat$c2 <- ifelse(dat$tar=="val" | dat$tar=="sod", -0.5, +0.5)
-  dat$c3 <- ifelse(dat$tar=="dod", -0.75, 0.25)
-  return(dat)
+  # vectors for testing individual random effects in LMM
+  dat_sim$c1 <- ifelse(dat_sim$tar=="val", -0.75, 0.25)
+  dat_sim$c2 <- ifelse(dat_sim$tar=="val" | dat_sim$tar=="sod", -0.5, +0.5)
+  dat_sim$c3 <- ifelse(dat_sim$tar=="dod", -0.75, 0.25)
+  return(dat_sim)
 }
 
 
 shinyServer(function(input, output) {
    
   output$effectPlot <- renderPlot({
-    dat <- simulate_data(means, input$standevAcross, input$standevWithin, input$nsubjects)
-    ids <- unique(dat$id)
-    conds <- unique(dat$tar)
-    
-    dat_part <- NULL
-    
-    set.seed(1)
-    
-    for (i in ids) {
-      sub_i <- dat[dat$id==i,]
-      for (j in conds) {
-        cond_j <- sub_i[sub_i$tar==j,]
-        rnd_subset <- cond_j[sample(c(1:nrow(cond_j)),round(input$obs*nrow(cond_j))),]
-        dat_part <- rbind(dat_part, rnd_subset)
-      }
+    if (input$nobs<2) {
+      stop('Not enough observations: random-effects parameters and residual variance unidentifiable. Minimum is 2.')
     }
+    if (input$nsubjects<2) {
+      stop('Not enough subjects for the given design. Minimum is 2.')
+    }
+    if (input$numberObsSubject<2) {
+      stop('Not enough observations. Minimum is 2.')
+    }
+    
+    # simulate means for each subject and condition
+    set.seed(1)
+    dat_mixed <- mixedDesign(W = 4, M = means, SD = standevAcrossSubjects, n = input$nsubjects, R=.7, long = TRUE)
+    
+    names(dat_mixed)<- c("id","tar","M")
+    levels(dat_mixed$tar) <- c("val","sod","dos","dod")
+    
+    # simulate observations within each subject and condition
+    dat <- simulate_data(dat_mixed, input$standevWithin, input$nobs)
+    
+    dat_sim_Subject<- NULL
+    
+    # simulate data for one subject
+    dat_subject <- dat_mixed[dat_mixed$id==1,]
+    for (j in unique(dat_subject[,2])){
+      tar_j <- dat_subject[dat_subject$tar==j,]
+      r <- rnorm2(input$numberObsSubject,tar_j[,3],input$standevSubject)
+      rmat <- matrix(c(rep(1,times=input$numberObsSubject),rep(j,times=input$numberObsSubject)),ncol=2,nrow=input$numberObsSubject)
+      rmati <- cbind(rmat, r)
+      dat_sim_Subject <- rbind(dat_sim_Subject, rmati)
+    }
+    
+    dat_sim_Subject <- data.frame(dat_sim_Subject)
+    
+    names(dat_sim_Subject)<- c("id","tar","rt")
+    dat_sim_Subject$rt <- as.numeric(as.character(dat_sim_Subject$rt))
+    dat_sim_Subject$tar <- factor(dat_sim_Subject$tar, levels=c("val", "sod", "dos", "dod")) 
+    contrasts(dat_sim_Subject$tar)
+    
+    
+    # ... also as vectors for testing individual random effects in LMM;  alternative use of model.matrix() below
+    dat_sim_Subject$c1 <- ifelse(dat_sim_Subject$tar=="val", -0.75, 0.25)
+    dat_sim_Subject$c2 <- ifelse(dat_sim_Subject$tar=="val" | dat_sim_Subject$tar=="sod", -0.5, +0.5)
+    dat_sim_Subject$c3 <- ifelse(dat_sim_Subject$tar=="dod", -0.75, 0.25)
+    
+    dat <- dat[which(as.numeric(dat$id) > 1),]
+    dat <- rbind(dat_sim_Subject, dat)
+    
+    
     
     # Contrasts
     # ... target factor
@@ -94,9 +124,9 @@ shinyServer(function(input, output) {
     cmat[,3] <- -1*cmat[,3]  # invert gravity contrast
     rownames(cmat) <- c("val", "sod", "dos", "dod")
     colnames(cmat) <- c(".spt", ".obj", ".att")
-    contrasts(dat_part$tar) <- cmat
+    contrasts(dat$tar) <- cmat
     
-    print(m2<- build_model(dat_part))  
+    print(m2<- build_model(dat))  
     
     m2.coef <- unlist(coef(m2))
     dim(m2.coef) <- c(input$nsubjects, 4)
@@ -111,7 +141,7 @@ shinyServer(function(input, output) {
     
 
     # Within-subject OLS estimates
-    df <- coef(lmList(rt ~ tar | id, data=dat_part))
+    df <- coef(lmList(rt ~ tar | id, data=dat))
 
     m2.coef$id <- factor(1:input$nsubjects)
 
@@ -128,6 +158,9 @@ shinyServer(function(input, output) {
                                panel.arrows(x, y, x1, y1, type = "open", length = 0.1, col="gray50", lty=1, angle = 15, ...)
                                panel.points(x, y, col="black", cex=0.9, pch=1)
                                panel.points(x1, y1, col="black", cex=0.7, pch=19)
+                               # print selected subject in red
+                               panel.points(df[1,4],df[1,2], col="red", cex=0.9, pch=1)
+                               panel.points(df[1,8],df[1,6], col="red", cex=0.7, pch=19)
                              }
                 ))     )
     # Mean RT and spatial effects
@@ -141,6 +174,9 @@ shinyServer(function(input, output) {
                                panel.arrows(x, y, x1, y1, type = "open", length = 0.1, col="gray50", lty=1, angle = 15, ...)
                                panel.points(x, y, col="black", cex=0.9, pch=1)
                                panel.points(x1, y1, col="black", cex=0.7, pch=19)
+                               # print selected subject in red
+                               panel.points(df[1,1],df[1,2], col="red", cex=0.9, pch=1)
+                               panel.points(df[1,5],df[1,6], col="red", cex=0.7, pch=19)
                              }
                 )) )  
     

@@ -90,6 +90,8 @@ px1 <- with(df,
                            panel.arrows(x, y, x1, y1, type = "open", length = 0.1, col="gray50", lty=1, angle = 15, ...)
                            panel.points(x, y, col="black", cex=0.9, pch=1)
                            panel.points(x1, y1, col="black", cex=0.7, pch=19)
+                           panel.points(df[1,4],df[1,2], col="red", cex=0.9, pch=1)
+                           panel.points(df[1,8],df[1,6], col="red", cex=0.7, pch=19)
                          }
             ))     )
 
