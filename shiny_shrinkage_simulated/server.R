@@ -12,7 +12,6 @@ library(scales)
 library(plyr)
 library(lattice)
 
-load("../inst/KWDYZ.FQPM.rda")
 source("../inst/dotplot.RK.R")
 source("../inst/mixedDesign.R")
 

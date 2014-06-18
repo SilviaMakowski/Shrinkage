@@ -1,0 +1,22 @@
+---
+title: "R Markdown Shrinkage"
+runtime: shiny
+output: html_document
+---
+
+
+
+
+This R Markdown document is made interactive using Shiny...
+
+
+```{r, echo=FALSE}
+shinyAppDir("../shiny_shrinkage_simulated",
+            options=list(
+              width="100%", heigth=550
+                         )
+            )
+```
+
+
+
