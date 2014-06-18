@@ -10,9 +10,11 @@ library(shiny)
 shinyUI(pageWithSidebar(
   
   # Application title
-  headerPanel("Spatial and attraction effects"),
+  headerPanel(HTML("<h1>Shrinkage effects</h1> 
+              <p>Illustration of shrinkage towards population mean using the two-rectangle cueing paradigm (Egly, Driver & Rafal, 1994).</p>"), 
+              windowTitle="Shiny shrinkage"),
   
-  # Sidebar with a slider input for amount of data per subject
+  # Sidebar with slider input
   sidebarPanel(
     sliderInput("nsubjects", 
                 "Number of subjects:", 
@@ -43,6 +45,6 @@ shinyUI(pageWithSidebar(
   
   # Show a plot of the generated distribution
   mainPanel(
-   plotOutput("effectPlot")
+   plotOutput("effectPlot",width = "800px", height = "600px")
   )
 ))
