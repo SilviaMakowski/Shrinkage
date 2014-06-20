@@ -15,10 +15,9 @@ library(lattice)
 source("../inst/dotplot.RK.R")
 source("../inst/mixedDesign.R")
 
+# means, standard deviations and correlations for mixedDesign derived from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2010).
 means <- matrix(c(358,392,406,403), ncol=4)
 standevAcrossSubjects <- 60
-
-# correlations for mixedDesign based on experimental data
 correlations <- matrix(c(1, .91, .88, .84, 
                          .91, 1, .95, .96, 
                          .88, .95, 1, .96,

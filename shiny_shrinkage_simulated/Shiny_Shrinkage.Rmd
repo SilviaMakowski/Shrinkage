@@ -1,19 +1,17 @@
 ---
-title: "R Markdown Shrinkage"
+title: "<h2>Shrinkage - Application and Tutorial</h2>"
+author: "Alexander Dietz and Silvia Makowski"
 runtime: shiny
 output: html_document
 ---
 
-
-
-
-This R Markdown document is made interactive using Shiny...
+This R Markdown document is made <b>interactive</b> using Shiny.
 
 
 ```{r, echo=FALSE}
 shinyAppDir("../shiny_shrinkage_simulated",
             options=list(
-              width="100%", heigth=550
+              width="100%", height = "800px"
                          )
             )
 ```
