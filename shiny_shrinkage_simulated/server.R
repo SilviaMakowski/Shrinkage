@@ -113,7 +113,7 @@ shinyServer(function(input, output) {
     m2.coef <- data.frame(m2.coef)
     names(m2.coef) <- c("Mean", "Spatial", "Object", "Attraction")
    
-    m2.ranef <- ranef(m2, postVar = TRUE)
+    m2.ranef <- ranef(m2, condVar = TRUE)
     names(m2.ranef[[1]])[1:4] <- c("Mean", "Spatial", "Object", "Attraction")
     
 
