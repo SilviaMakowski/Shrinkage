@@ -30,12 +30,16 @@ The data will be simulated using mixedDesign() and rnorm() functions. The input 
 This app can also be used to show the effect that one subject's data has on shrinkage. For this purpose, the two sliders **Standard deviation for selected subject (red):** and **Amount of observations for selected subject (red):** simulate the standard deviation and amount of observations for the selected subject independently of the two slider inputs for the other subjects.</p>
 </br>
 <h3> Examples </h3>
-In the first example we want to illustrate the influence of the amount of observations in each within subject factor on shrinkage. Therefore, we first configured the input to match the experimental data from Kliegl et al (2011), to assure that standard deviations and amount of data are in line with expectations for reaction time experiments.
-Screenshot realistic data ...
-
-The following plot shows the increase in shrinkage as the amount of data is reduced to half...
-
-In contrast, doubling the amount of data in each within subject condition greatly reduces the effect of shrinkage..
+In the first example we want to illustrate the influence of the amount of observations in each within subject factor on shrinkage. Therefore, we first configured the input to match the experimental data from Kliegl et al (2011), to assure that standard deviations and amount of data per within-subject factor are in line with expectations for reaction time experiments.
+The results for this configuration are shown in the first figure:
+</br>
+![Alt text]("../Figure_1.png")
+The following figure shows the increase in shrinkage as the amount of data is reduced to half of the previous slider input:
+</br>
+![Alt text]("../Figure_2.png")
+In contrast, doubling the amount of data in each within subject condition greatly reduces the effect of shrinkage, as shown in the following figure:
+</br>
+![Alt text]("../Figure_3.png")
 </br>
 **References:**
 </br>
