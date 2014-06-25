@@ -28,8 +28,15 @@ The data will be simulated using mixedDesign() and rnorm() functions. The input 
 **Amount of observations per within subject factor:** This slider defines the number of values, which are generated for each experimental condition of every subject.</p>
 <p align="justify">
 This app can also be used to show the effect that one subject's data has on shrinkage. For this purpose, the two sliders **Standard deviation for selected subject (red):** and **Amount of observations for selected subject (red):** simulate the standard deviation and amount of observations for the selected subject independently of the two slider inputs for the other subjects.</p>
+</br>
+<h3> Examples </h3>
+In the first example we want to illustrate the influence of the amount of observations in each within subject factor on shrinkage. Therefore, we first configured the input to match the experimental data from Kliegl et al (2011), to assure that standard deviations and amount of data are in line with expectations for reaction time experiments.
+Screenshot realistic data ...
 
+The following plot shows the increase in shrinkage as the amount of data is reduced to half...
 
+In contrast, doubling the amount of data in each within subject condition greatly reduces the effect of shrinkage..
+</br>
 **References:**
 </br>
 Egly, R., Driver, J. & Rafal, R. D. (1994). Shifting visual attention between objects and locations: evidence from normal and parietal lesion subjects. *Journal of Experimental Psychology: General, 123*, 161-177. 

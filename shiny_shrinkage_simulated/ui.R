@@ -29,8 +29,8 @@ shinyUI(pageWithSidebar(
     sliderInput("nobs", 
                 "Amount of observations per within subject factor:", 
                 min = 0, 
-                max = 50, 
-                value = 25),
+                max = 100, 
+                value = 50),
     sliderInput("standevSubject", 
                 "Standard deviation for selected subject (red):", 
                 min = 0, 
@@ -39,8 +39,8 @@ shinyUI(pageWithSidebar(
     sliderInput("numberObsSubject", 
                 "Amount of observations for selected subject (red):", 
                 min = 0, 
-                max = 50, 
-                value = 25)
+                max = 100, 
+                value = 50)
   ),
   
   # Show caterpillar plot and scatterplots
