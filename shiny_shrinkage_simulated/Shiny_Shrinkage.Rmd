@@ -1,12 +1,11 @@
 ---
 title: "<h2>Shrinkage - Application and Tutorial</h2>"
-author: "Alexander Dietz and Silvia Makowski"
+author: "Reinhold Kliegl, Alexander Dietz and Silvia Makowski"
 runtime: shiny
 output: html_document
 ---
-
-This R Markdown document is made <b>interactive</b> using Shiny.
-
+</br>
+This R Markdown document is made **interactive** using Shiny. The code for the application can be found in the R scripts **server.R** and **ui.R**.
 
 ```{r, echo=FALSE}
 shinyAppDir("../shiny_shrinkage_simulated",
@@ -16,5 +15,25 @@ shinyAppDir("../shiny_shrinkage_simulated",
             )
 ```
 
+<h3> Tutorial </h3>
+<p align="justify">
+This application simulates a classical experiment of visual attention: the two-rectangle cueing paradigm (Egly et al., 1994). Attentional selection of visual information has been conceptualized as space-based, as object-based, and as being due to an attraction back to the original fixation location. These effects are replicated with simulated RT differences between four experimental conditions of the two-rectangle cueing paradigm. For more information on the underlying experimental design, refer to Kliegl et al. (2011).</p>
+<p align="justify">
+The data will be simulated using mixedDesign() and rnorm() functions. The input for these functions can be specified using the different sliders in the shiny shrinkage application. The following section will outline the functionality of each slider:</p>
+<p align="justify">
+**Number of subjects:** The purpose of this slider is to define the number of subjects for the experiment. The mixedDesign() function generates four mean values per subject.
+<p align="justify">
+**Standard deviation within subjects:** For every subject, normally distributed values are generated for each experimental condition based on the mean from mixedDesign() and a standard deviation specified by this slider.</p>
+<p align="justify">
+**Amount of observations per within subject factor:** This slider defines the number of values, which are generated for each experimental condition of every subject.</p>
+<p align="justify">
+This app can also be used to show the effect that one subject's data has on shrinkage. For this purpose, the two sliders **Standard deviation for selected subject (red):** and **Amount of observations for selected subject (red):** simulate the standard deviation and amount of observations for the selected subject independently of the two slider inputs for the other subjects.</p>
 
 
+**References:**
+</br>
+Egly, R., Driver, J. & Rafal, R. D. (1994). Shifting visual attention between objects and locations: evidence from normal and parietal lesion subjects. *Journal of Experimental Psychology: General, 123*, 161-177. 
+</br>
+Hohenstein, S. & Kliegl, R. (2013). Simulation of Factorial Mixed-Model Designs in R: The mixedDesign() Function.
+</br>
+Kliegl, R., Wei, P., Dambacher, M., Yan, M. & Zhou, X. (2011). Experimental effects and individual differences in linear mixed models: estimating the relationship between spatial, object and attraction effects in visual attention. *Frontiers in Psychology, 2*, 1-12.

@@ -11,7 +11,7 @@ shinyUI(pageWithSidebar(
   
   # Application title
   headerPanel(HTML("<h3>Shrinkage effects</h3> 
-              <p>This application can be used for illustrating shrinkage of observed data toward the estimated population mean in linear mixed models. LMM analyses are based on simulated data using mixedDesign() function (Hohenstein & Kliegl, 2013). Means, standard deviations and correlations used in mixedDesign() are calculated from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2010) using the two-rectangle cueing paradigm (Egly, Driver & Rafal, 1994). </p>"), 
+              <p>This application can be used for illustrating shrinkage of observed data toward the estimated population mean in linear mixed models. LMM analyses are based on simulated data using mixedDesign() function (Hohenstein & Kliegl, 2013). Means, standard deviations and correlations used in mixedDesign() are calculated from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2011) using the two-rectangle cueing paradigm (Egly, Driver & Rafal, 1994). </p>"), 
               windowTitle="Shiny Shrinkage"),
   
   # Sidebar with slider input
