@@ -69,7 +69,8 @@ shinyServer(function(input, output) {
    
   output$effectPlot <- renderPlot({
     if (input$nobs<2) {
-      stop('Not enough observations: random-effects parameters and residual variance unidentifiable. Minimum is 2.')
+      stop('Not enough observations: random-effects parameters and residual variance unidentifiable. 
+          Minimum is 2.')
     }
     if (input$nsubjects<2) {
       stop('Not enough subjects for the given design. Minimum is 2.')
