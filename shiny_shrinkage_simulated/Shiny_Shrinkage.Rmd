@@ -27,15 +27,15 @@ The data will be simulated using mixedDesign() and rnorm() functions. The input 
 <p align="justify">
 **Amount of observations per within subject factor:** This slider defines the number of values, which are generated for each experimental condition of every subject.</p>
 <p align="justify">
-This app can also be used to show the effect that one subject's data (always first subject in data set) has on shrinkage. For this purpose, the two sliders **Standard deviation for selected subject (red):** and **Amount of observations for selected subject (red):** simulate the standard deviation and amount of observations for the selected subject independently of the two corresponding slider inputs for the other subjects.</p>
+This app can also be used to show the effect that one subject's data (always first subject in data set) has on shrinkage. For this purpose, the two sliders **Standard deviation for selected subject (red)** and **Amount of observations for selected subject (red)** simulate the standard deviation and amount of observations for the selected subject independently of the two corresponding slider inputs for the other subjects.</p>
 </br>
 <h4> Examples </h4>
 <p align="justify">
-Kliegl, Masson and Richter (2010) indicated that shrinkage is essentially influenced by three factors. That is, a) the more extreme an observed mean, b) the smaller the number of observations, and c) the larger the variance for a given subject’s data, the more will this subject’s conditional mean be based on the overall mean (i.e., “shrunken” towards the population mean; see Gelman & Hill, 2007, especially chapters 12 and 18, for expositions). In this section, we provide examples how the shiny shrinkage app can be used to show the influence of the above mentioned factors on shrinkage. You can replicate each example using the application in the **Shrinkage Application** section of this document.
+Kliegl, Masson and Richter (2010) indicated that shrinkage is essentially influenced by three factors. That is, a) the more extreme an observed mean, b) the smaller the number of observations, and c) the larger the variance for a given subject’s data, the more will this subject’s conditional mean be based on the overall mean (i.e., “shrunken” towards the population mean; see Gelman & Hill, 2007, especially chapters 12 and 18, for expositions). In this section, we provide examples how the shiny shrinkage app can be used to show the influence of the above-mentioned factors on shrinkage. You can replicate each example using the application in the **Shrinkage Application** section of this document.
 </p>
 <p align="justify">
-First, we configured the input to match the experimental data from Kliegl et al (2011), to assure that standard deviations and amount of data per within-subject factor are in line with expectations for reaction time experiments.
-The results for this configuration are shown in the first figure, which will be used as a **reference** for all subsequent examples:
+First, we configured the input to match the experimental data from Kliegl et al. (2011), to assure that standard deviations and amount of data per within-subject factor are in line with expectations for reaction time experiments.
+The results for this configuration are shown in Figure 1, which will be used as a **reference** for all subsequent examples:
 </p>
 Figure 1:
 </br>
@@ -45,7 +45,7 @@ Figure 1:
 
 <h5> Number of observations </h5>
 <p align="justify">
-In the first examples (Figure 2 & 3), we manipulated the amount of observations in each within subject factor for all subjects simulataneously, to illustrate its influence on shrinkage (note that for these examples, the two sliders for **selected subject (red)** need to be set to the same values as the corresponding sliders for all subjects). The following figure shows the increase in shrinkage as the amount of data is reduced to half of the slider input compared to the reference configuration above (Figure 1):
+In the first examples (Figure 2 & 3), we manipulated the amount of observations in each within subject factor for all subjects simultaneously, to illustrate its influence on shrinkage (note that for these examples, the two sliders for **selected subject (red)** need to be set to the same values as the corresponding sliders for all subjects). The following figure shows the increase in shrinkage as the amount of data is reduced to half of the slider input compared to the reference configuration above (Figure 1):
 </p>
 Figure 2:
 </br>
@@ -61,7 +61,7 @@ Figure 3:
 
 <h5> Standard deviation within subjects </h5>
 <p align="justify">
-In the follwing examples (Figure 4 & 5), we varied the standard deviation within each subject for all subjects simulataneously, to illustrate its influence on shrinkage (note that for these examples, the two sliders for **selected subject (red)** again need to be set to the same values as the corresponding sliders for all subjects). The following figure shows the increase in shrinkage as the standard deviation within each subject increased compared to the reference configuration above (Figure 1):
+In the following examples (Figure 4 & 5), we varied the standard deviation within each subject for all subjects simultaneously, to illustrate its influence on shrinkage (note that for these examples, the two sliders for **selected subject (red)** again need to be set to the same values as the corresponding sliders for all subjects). The following figure shows the increase in shrinkage as the standard deviation within each subject increased compared to the reference configuration above (Figure 1):
 </p>
 Figure 4:
 </br>
@@ -77,7 +77,10 @@ Figure 5:
 
 <h5> Adjusting data of one subject </h5>
 <p align="justify">
-Finally, we also want to illustrate the effect of shrinkage by varying the data for a single subject (note that for the follwing examples (Figure 6-9) the two sliders for **selected subject (red)** are set to different values than the corresponding sliders for all subjects). We observed, that varying the standard deviation for the selected subject does not have a strong influence on the shrinkage of this subject's data. However, as the amount of data (i.e. the number of subjects, as well as the amount of observations per subject) of the remaining subjects decreases, the influence of one subject's standard deviation gets stronger. Varying the amount of observations for one subject, on the other hand, consitently shows a strong effect on shrinkage of the subject's data. Therefore, for the following examples we focused on manipulating the number of observations for the selected subject.
+Finally, we also want to illustrate the effect of shrinkage by varying the data for a single subject (note that for the following examples (Figure 6-9) the two sliders for **selected subject (red)** are set to different values than the corresponding sliders for all subjects). We observed, that, using a realistic configuration for the data of all subjects, as in the reference example, varying the standard deviation for the selected subject does not have a strong influence on the shrinkage of this subject's data. However, as the amount of data (i.e. the number of subjects, as well as the amount of observations per subject) of the remaining subjects decreases, the influence of one subject's standard deviation gets stronger.
+</p>
+<p align="justify">
+Varying the amount of observations for one subject, on the other hand, consistently shows a strong effect on shrinkage of the subject's data. In the following examples (Figure 6-9), we focused on manipulating the number of observations for the selected subject.
 </p>
 <p align="justify">
 Figure 6 shows the increase in shrinkage for the selected subject (red) compared to the reference configuration above (Figure 1), as the amount of data for this subject is reduced to half of the amount of data for all subjects:
