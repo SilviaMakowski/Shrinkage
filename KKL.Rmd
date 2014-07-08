@@ -1,0 +1,307 @@
+---
+title: "Replication of KWDYZ Experiment"
+author: "Reinhold Kliegl"
+date: "14/04/2014"
+output: html_document
+---
+    
+    
+```{r preliminaries,echo=FALSE,include=FALSE,cache=FALSE}
+library(lme4)
+library(knitr)
+library(RePsychLing)
+
+opts_chunk$set(cache=TRUE)
+options(show.signif.stars=FALSE,width=92)
+```
+
+Recycling of Kliegl, R., Kuschela, J., & Laubrock (2011, unpublished). The data are from two experiments with replication of the *EglyParadigm* with horizontally, vertically, and  diagonally (45° left or 45° right) oriented rectangles. Experiment 1 uses small targets; experiment 2 uses large targets, like Kliegl et al. (2011), but also includes diagonal orientations.
+
+The experiments are a follow-up to:
+Kliegl, R., Wei, P.,  Dambacher, M., Yan, M., &  Zhou, X. (2011). Experimental 
+Effects and Individual Differences in Linear Mixed Models: Estimating the Relationship between 
+Spatial, Object, and Attraction Effects in Visual Attention. *Frontiers in Psychology*
+
+## Joint analyses of Experiments 1 and 2
+
+### Data
+
+The data are available as `KKL` in the `RePsychLing` package. 
+
+```{r dat}
+names(KKL)[1] <- "subj"
+str(KKL)
+```
+
+### Contrasts
+
+Repeated contrasts for factor cue-target relation (ctr) 
+
+```{r factor}
+cmat.t <- MASS::contr.sdif(4)      
+cmat.t[,3] <- -1*cmat.t[,3]  # invert gravity contrast
+rownames(cmat.t) <- c("val", "sod", "dos", "dod")
+colnames(cmat.t) <- c(".spt", ".obj", ".grv")
+
+(contrasts(KKL$tar) <- cmat.t)
+
+# ... sdif contrast for cardinal vs. diagonal (within-subj factor)
+contrasts(KKL$cardinal) <- MASS::contr.sdif(2)
+contrasts(KKL$cardinal)
+
+# ... sdif contrast for target size (between-subj factor) 
+contrasts(KKL$size) <- MASS::contr.sdif(2)
+contrasts(KKL$size)
+
+
+```
+
+Contrasts as numeric covariates from model matrix
+
+```{r vector}
+mm <- model.matrix(~ size*tar*cardinal, data=KKL)
+
+sze <- mm[, 2]
+spt <- mm[, 3]
+obj <- mm[, 4]
+grv <- mm[, 5]
+orn <- mm[, 6]
+```
+
+### Baseline and zero-correlation-parameters models
+
+```{r all}
+print(summary(m0 <- lmer(log(rt) ~ sze*(spt+obj+grv)*orn + (1 | subj), 
+                         data=KKL, REML=FALSE)), corr=FALSE)
+getME(m0, "theta")
+
+print(summary(m1 <- lmer(log(rt) ~ sze*(spt+obj+grv)*orn +  (spt + obj + grv + orn || subj),
+                         data=KKL, REML=FALSE)), corr=FALSE)
+getME(m1, "theta")  # variance components look ok
+
+anova(m0, m1)   # Support for m1 over m0
+```
+
+### Do we need all variance components? Drop1 at a time.
+
+```{r m1_drop1}
+print(summary(m1.no_spt <- lmer(log(rt) ~ sze*(spt+obj+grv)*orn +  (obj + grv + orn || subj),
+                                data=KKL, REML=FALSE)), corr=FALSE)
+anova(m1.no_spt, m1)
+
+print(summary(m1.no_obj <- lmer(log(rt) ~ sze*(spt+obj+grv)*orn +  (spt + grv + orn || subj),
+                                control=lmerControl(check.conv.grad = .makeCC("warning", tol = 6e-3, relTol = NULL)),
+                                data=KKL, REML=FALSE)), corr=FALSE)
+anova(m1.no_obj, m1)
+
+print(summary(m1.no_grv <- lmer(log(rt) ~ sze*(spt+obj+grv)*orn +  (spt + obj + orn || subj),
+                                data=KKL, REML=FALSE)), corr=FALSE)
+anova(m1.no_grv, m1)
+
+print(summary(m1.no_orn <- lmer(log(rt) ~ sze*(spt+obj+grv)*orn +  (spt + obj + grv || subj),
+                                data=KKL, REML=FALSE)), corr=FALSE)
+anova(m1.no_orn, m1)
+```
+
+### Maximal model
+The drop1 test of variance components relative to model `m1` are all significant. So we move on to a test of the maximal model for this experiment. 
+
+```{r m2}
+print(summary(m2 <- lmer(log(rt) ~ sze*(spt+obj+grv)*orn + (spt + obj + grv + orn | subj),
+                         control=lmerControl(check.conv.grad = .makeCC("warning", tol = 6e-3, relTol = NULL)),
+                         data=KKL, REML=FALSE)), corr=FALSE)
+
+getME(m2, "theta")  # Variance components look ok
+anova(m1, m2)       # Support for m2 over m1
+```
+
+### Prune low correlation parameters from model
+
+There is significant information associated with the ensemble of correlation parameters. Nevertheless, the object and orientation effects are not significantly correlated with the mean and spatial attention effects. So we remove these correlation parameters from the model. 
+
+```{r m3}
+print(summary(m3 <- lmer(log(rt) ~ sze*(spt+obj+grv)*orn + (spt + grv | subj) + (0 + obj | subj) + (0 + orn | subj),
+                         control=lmerControl(check.conv.grad = .makeCC("warning", tol = 6e-3, relTol = NULL)),
+                         data=KKL, REML=FALSE)), corr=FALSE)
+
+getME(m3, "theta")  # Variance components look ok
+anova(m3, m2)       # cp's of object and orientation effect are not significant
+```
+
+Model `m3` looks like an appropriate model for these data. 
+
+## Experiment 1
+
+### Baseline and zero-correlation-parameters models
+```{r exp1}
+dat1 <- subset(KKL, size=="small")
+mm1 <- model.matrix(~ tar*cardinal, data=dat1)
+spt1 <- mm1[, 2]
+obj1 <- mm1[, 3]
+grv1 <- mm1[, 4]
+orn1 <- mm1[, 5]
+
+print(summary(m0.1 <- lmer(log(rt) ~ (spt1+obj1+grv1)*orn1 + (1 | subj), 
+                           data=dat1,REML=FALSE)),corr=FALSE) 
+getME(m0.1, "theta")
+
+print(summary(m1.1 <- lmer(log(rt) ~ (spt1+obj1+grv1)*orn1 + (spt1 + obj1 + grv1 + orn1 || subj),
+                           data=dat1, REML=FALSE)), corr=FALSE)
+getME(m1.1, "theta")  # variance components look ok
+```
+
+### Drop1-LRTs for variance components
+
+```{r m1.1_drop1}
+print(summary(m1.1.no_spt <- lmer(log(rt) ~ (spt1+obj1+grv1)*orn1 +  (obj1 + grv1 + orn1 || subj),
+                                data=dat1, REML=FALSE)), corr=FALSE)
+anova(m1.1.no_spt, m1.1)
+
+print(summary(m1.1.no_obj <- lmer(log(rt) ~ (spt1+obj1+grv1)*orn1 +  (spt1 + grv1 + orn1 || subj),
+                                data=dat1, REML=FALSE)), corr=FALSE)
+anova(m1.1.no_obj, m1.1)
+
+print(summary(m1.1.no_grv <- lmer(log(rt) ~ (spt1+obj1+grv1)*orn1 +  (spt1 + obj1 + orn1 || subj),
+                                data=dat1, REML=FALSE)), corr=FALSE)
+anova(m1.1.no_grv, m1.1)
+
+print(summary(m1.1.no_orn <- lmer(log(rt) ~ (spt1+obj1+grv1)*orn1 +  (spt1 + obj1 + grv1 || subj),
+                                data=dat1, REML=FALSE)), corr=FALSE)
+anova(m1.1.no_orn, m1.1)
+```
+
+There is not enough between-subject variance for the object effect (i.e., the smallest variance component). Note that the object effect was estimated with the smallest variance component for the entire set of data. Obviously, reducing the sample size did not leave us with enough statistical power to estimate this variance component reliably. Thus, we proceed w/o this variance component for model `m2.1`. 
+
+### Expanding with correlation parameters
+
+```{r m2.1}
+print(summary(m2.1 <- lmer(log(rt) ~ (spt1+obj1+grv1)*orn1 + (spt1 + grv1 + orn1 | subj),
+                           data=dat1, REML=FALSE)), corr=FALSE)
+getME(m2.1, "theta")
+anova(m1.1.no_obj, m2.1)
+```
+
+### Drop cp's for orientation effect
+Again, it look like one could drop the correlation parameters for the orientation effect. 
+
+```{r m3.1}
+print(summary(m3.1 <- lmer(log(rt) ~ (spt1+obj1+grv1)*orn1 + (spt1 + grv1 | subj) + (0 + orn1 | subj),
+                           data=dat1, REML=FALSE)), corr=FALSE)
+getME(m3.1, "theta")  
+
+anova(m3.1, m2.1)
+```
+
+In summary, the final model `m3.1` looks like a suitable model for Experiment 1. Basically, the between-subject variance in the object effect is too small to begin with and the orientation effects are not significantly correlated with the mean and spatial attention effects. (Alternative LRT-drop procedures lead to the same final model.)
+
+## Experiment 2
+
+### Baseline and zero-correlation-parameters models
+
+```{r exp2}
+dat2 <- subset(KKL, size=="big")
+mm2 <- model.matrix(~ tar*cardinal, data=dat2)
+spt2 <- mm2[, 2]
+obj2 <- mm2[, 3]
+grv2 <- mm2[, 4]
+orn2 <- mm2[, 5]
+
+print(summary(m0.2 <- lmer(log(rt) ~ (spt2+obj2+grv2)*orn2 + (1 | subj),
+                           data=dat2, REML=FALSE)), corr=FALSE)
+getME(m0.2, "theta")
+
+print(summary(m1.2 <- lmer(log(rt) ~ (spt2+obj2+grv2)*orn2 + (spt2 + obj2 + grv2 + orn2 || subj),
+                           data=dat2, REML=FALSE)), corr=FALSE)
+
+getME(m1.2, "theta")  # variance components look ok
+
+anova(m0.2, m1.2)
+```
+
+### Drop1-LRTs for variance components
+
+```{r m1.2_drop1}
+print(summary(m1.2.no_spt <- lmer(log(rt) ~ (spt2+obj2+grv2)*orn2 +  (obj2 + grv2 + orn2 || subj),
+                                data=dat2, REML=FALSE)), corr=FALSE)
+anova(m1.2.no_spt, m1.2)
+
+print(summary(m1.2.no_obj <- lmer(log(rt) ~ (spt2+obj2+grv2)*orn2 +  (spt2 + grv2 + orn2 || subj),
+                                data=dat2, REML=FALSE)), corr=FALSE)
+anova(m1.2.no_obj, m1.2)
+
+print(summary(m1.2.no_grv <- lmer(log(rt) ~ (spt2+obj2+grv2)*orn2 +  (spt2 + obj2 + orn2 || subj),
+                                data=dat2, REML=FALSE)), corr=FALSE)
+anova(m1.2.no_grv, m1.2)
+
+print(summary(m1.2.no_orn <- lmer(log(rt) ~ (spt2+obj2+grv2)*orn2 +  (spt2 + obj2 + grv2 || subj),
+                                data=dat2, REML=FALSE)), corr=FALSE)
+anova(m1.2.no_orn, m1.2)
+```
+
+The variance components for the gravity effect is only marginally significant (p < .06), but there is not much harm leaving it in the model. We proceed to test the maximal model relative to model `m1.2`
+
+### Maximal and pruned model
+
+```{r m2.2}
+print(summary(m2.2 <- lmer(log(rt) ~ (spt2+obj2+grv2)*orn2 + (spt2 + obj2 + grv2 + orn2 | subj),
+                           data=dat2, REML=FALSE)), corr=FALSE)
+
+getME(m2.2, "theta")      # Variance components look ok
+anova(m1.2, m2.2)   # Model 2 not better than model 1 (i.e., correlation parameters are not significant)
+```
+
+The maximal model `m2.2` does not fit significantly better than the zcp model `m1.2`. Thus, overall the correlation parameters are not signicant. Nevertheless, the positive correlation between Intercept and  spatial effect is again positive, and the correlation between spatial and attraction effect is again negative. So we prune the other object-effect and orientation-effect correlations as above.
+
+```{r m3.2}
+print(summary(m3.2 <- lmer(log(rt) ~ (spt2+obj2+grv2)*orn2 + (spt2  + grv2 | subj) + (0 + obj2 | subj) + (0 + orn2 | subj),
+                           data=dat2, REML=FALSE)), corr=FALSE)
+
+getME(m3.2, "theta")      # Variance components look ok
+anova(m1.2, m3.2, m2.2)   # Model 2 not better than model 1 (i.e., correlation parameters are not significant)
+```
+
+The pruned correlation model `m3.2` fits significantly better than the zcp model `m1.2`.  
+
+## Cholesky factor and singular value decomposition 
+In this section, I check the dimensionality of the relative covariance matrix for the subject-related random effects for some of the models estimated above with singular value decomposition. This requires to assemble a lower n x n triangular matrix for the n variance components of the model. Correlations forced to zero for a model are added at the appropriate locations. 
+
+```{r svd}
+# Model 2 (Exp 1 + 2)
+chf2 <- matrix(0,nrow=5,ncol=5)
+chf2[lower.tri(chf2,diag=TRUE)] <- getME(m2,"theta")[1:15]
+sv2 <- svd(chf2)
+round(sv2$d^2/sum(sv2$d^2)*100)
+
+# Model 3 (Exp 1 + 2)
+chf3 <- matrix(0, nrow=5, ncol=5)
+diag(chf3) <- getME(m3, "theta")[c(1, 4, 6, 7, 8)]
+chf3[2:3, 1] <- getME(m3, "theta")[c(2,3)]
+chf3[3, 2] <- getME(m3, "theta")[5]
+sv3 <- svd(chf3)
+round(sv3$d^2/sum(sv3$d^2)*100)
+
+# Model 3.1 (Exp 1; no vc for object effect)
+chf3.1 <- matrix(0, nrow=4, ncol=4)
+diag(chf3.1) <- getME(m3.1, "theta")[c(1, 4, 6, 7)]
+chf3.1[2:3, 1] <- getME(m3.1, "theta")[c(2,3)]
+chf3.1[3, 2] <- getME(m3.1, "theta")[5]
+sv3.1 <- svd(chf3.1)
+round(sv3.1$d^2/sum(sv3.1$d^2)*100)
+
+# Model 3.2 (Exp 2)
+chf3.2 <- matrix(0, nrow=5, ncol=5)
+diag(chf3.2) <- getME(m3.2, "theta")[c(1, 4, 6, 7, 8)]
+chf3.2[2:3, 1] <- getME(m3.2, "theta")[c(2,3)]
+chf3.2[3, 2] <- getME(m3.2, "theta")[5]
+sv3.2 <- svd(chf3.2)
+round(sv3.2$d^2/sum(sv3.2$d^2)*100)
+```
+
+## Summary
+The analyses suggest that the maximal models of three experiments; i.e., Kliegl et al. (2011, KWDYZ) and one of the two experiments in Kliegl et al. (2012, KKL) are overparameterized. Reducing model complexity with drop1-LRTs of variance components and correlation parameters led to acceptable models in each case.
+
+## Package Versions 
+```{r versions}
+sessionInfo()
+```
+

@@ -1,6 +1,6 @@
 ---
 title: "<h2>Shrinkage - Application and Tutorial</h2>"
-author: "Reinhold Kliegl, Alexander Dietz and Silvia Makowski"
+author: "Silvia Makowski, Alexander Dietz, & Reinhold Kliegl"
 runtime: shiny
 output: html_document
 ---
@@ -25,7 +25,7 @@ The data will be simulated using mixedDesign() and rnorm() functions. The input 
 <p align="justify">
 **Standard deviation within subjects:** For every subject, normally distributed values are generated for each experimental condition based on the mean from mixedDesign() and a standard deviation specified by this slider.</p>
 <p align="justify">
-**Amount of observations per within subject factor:** This slider defines the number of values, which are generated for each experimental condition of every subject.</p>
+**Number of observations per within subject factor:** This slider defines the number of observations generated for each level of the experimental condition manipulated within each subject.</p>
 <p align="justify">
 This app can also be used to show the effect that one subject's data (always first subject in data set) has on shrinkage. For this purpose, the two sliders **Standard deviation for selected subject (red)** and **Amount of observations for selected subject (red)** simulate the standard deviation and amount of observations for the selected subject independently of the two corresponding slider inputs for the other subjects.</p>
 </br>
