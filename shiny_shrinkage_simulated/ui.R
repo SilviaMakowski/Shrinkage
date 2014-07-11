@@ -28,7 +28,7 @@ shinyUI(pageWithSidebar(
                 max = 100, 
                 value = 50),
     sliderInput("standevWithin", 
-                "Standard deviation within within each subject and within each condition:", 
+                "Standard deviation within each condition for each subject:", 
                 min = 0, 
                 max = 200, 
                 value = 100),
