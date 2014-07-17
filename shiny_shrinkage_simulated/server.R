@@ -12,8 +12,8 @@ library(scales)
 library(plyr)
 library(lattice)
 
-source("../inst/dotplot.RK.R")
-source("../inst/mixedDesign.R")
+source("dotplot.RK.R")
+source("mixedDesign.R")
 
 # means, standard deviations and correlations for mixedDesign derived from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2010).
 means <- matrix(c(358,392,406,403), ncol=4)

@@ -87,7 +87,7 @@ Figure 6:
  <img src="Figure_6.png" height="600px" width="700px" />
 </br>
 <p align="justify">
-Conversely, doubling the number of data for this subject compared results in a decrease in shrinkage for the selected subject (red):
+Conversely, doubling the number of data for this subject results in a decrease in shrinkage for the selected subject (red):
 </p>
 Figure 7:
 </br>
