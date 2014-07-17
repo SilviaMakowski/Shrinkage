@@ -61,7 +61,7 @@ Figure 3:
 
 <h5> Standard deviation within each subject and within each condition</h5>
 <p align="justify">
-In the following examples (Figure 4 & 5), we varied the standard deviation within each subject for all subjects simultaneously. (Note that for these examples, the two sliders for **selected subject (red)**  need to be set to the same values as the corresponding sliders for all subjects). The following figure shows the increase in shrinkage when the standard deviation within each subject is increased relative to the reference configuration (Figure 1):
+In the following examples (Figure 4 & 5), we varied the standard deviation within each subject for all subjects simultaneously. (Note that for these examples, the two sliders for **selected subject (red)**  need to be set to the same values as the corresponding sliders for all subjects). The following figure shows the increase in shrinkage when the standard deviation within each subject is increased relative to the reference configuration (Figure 1). Even more importantly, we note that the correlation for spatial and attraction effect increases substantiallyfor this setting, that is the black dots cluster along a negative regression slope. Such a larger correlation parameter may indicate that the complexity of the model is out of sync with what is supported by the data. Indeed, if the standard deviation within each subject is increased to 200, the conditional modes for both correlation parameters fall on straight lines, indicating perfect correlations. In this case, the model is definitely overparameterized; in other words the data no longer support estimation of such a complex model. 
 </p>
 Figure 4:
 </br>
