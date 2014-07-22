@@ -7,7 +7,7 @@ runtime: shiny
 output: html_document
 ---
 </br>
-This R Markdown document is made **interactive** using Shiny. The code for the application can be found in the R script **shrinkage_function.R**.
+This R Markdown document is made **interactive** using Shiny.
 
 ```{r, echo=FALSE}
 source("shrinkage_function.R")
@@ -112,7 +112,7 @@ Figure 9:
 
 </br>
 
-**References:**
+**References**
 </br>
 Bates, D., Mächler, M., Bolker, B. J., & Walker, S. C. (2014). Fitting linear mixed-effects models using lme4. *Journal of Statistical Software*.
 </br>
@@ -128,7 +128,7 @@ Kliegl, R., Masson, M. E. J, & Richter, E. M. (2010). A linear mixed model analy
 Kliegl, R., Wei, P., Dambacher, M., Yan, M. & Zhou, X. (2011). Experimental effects and individual differences in linear mixed models: estimating the relationship between spatial, object and attraction effects in visual attention. *Frontiers in Psychology, 2*, 1-12.
 </br>
 </br>
-**Corresponding author:**</br>
+**Corresponding author**</br>
 <p align="justify">
 Address: University of Potsdam, Department of Psychology, Building 14, Room 4.04, Karl-Liebknecht-Str. 24-25, 14476 Potsdam, Germany. </br>
 E-mail address: kliegl@uni-potsdam.de (Reinhold Kliegl).
