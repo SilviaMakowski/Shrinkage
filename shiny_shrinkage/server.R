@@ -16,8 +16,8 @@ library(scales)
 library(plyr)
 library(lattice)
 
-load("../inst/KWDYZ.FQPM.rda")
-source("../inst/dotplot.RK.R")
+load("KWDYZ.FQPM.rda")
+source("dotplot.RK.R")
 
 dat <- c[c$rt>150, 1:5]
 

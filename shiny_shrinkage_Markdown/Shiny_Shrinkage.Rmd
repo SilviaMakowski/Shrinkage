@@ -5,14 +5,11 @@ runtime: shiny
 output: html_document
 ---
 </br>
-This R Markdown document is made **interactive** using Shiny. The code for the application can be found in the R scripts **server.R** and **ui.R**.
+This R Markdown document is made **interactive** using Shiny. The code for the application can be found in the R script **shrinkage_function.R**.
 
-```{r, echo=FALSE}
-shinyAppDir("../shiny_shrinkage_simulated",
-            options=list(
-              width="100%", height = "800px"
-                         )
-            )
+```{r echo=FALSE}
+source("shrinkage_function.R")
+shrinkage_app()
 ```
 
 <h3> Tutorial </h3>
