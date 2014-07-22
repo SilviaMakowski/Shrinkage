@@ -93,9 +93,9 @@ Figure 7:
  <img src="Figure_7.png" height="600px" width="700px" />
 </br>
 <p align="justify">
-
 Both a decrease and increase in number of observations for the selected subject strongly influenced the shrinkage of this subject's data, while the data of the remaining subjects remained largely unaffected. What happens if we change the number of data  (i.e., both the number of subjects and the number of observations per subject) of the entire sample relative to those of the selected subject? If the number of observations for all subjects is reduced, increasing the number of observations for the selected subject not only reduces shrinkage for this subject's means, but also for the means of all subjects. The smaller the number of observations for all subjects, the stronger will be the influence of one subject's data.
-
+</p>
+<p align="justify">
 An illustration of this pattern is provided in Figures 8 and 9. For both configurations, first we reduced the number of observations for all subjects to half of those in the reference configuration (Figure 1). Figures 8 (identical with Figure 2) and 9  differ only in the number of observations for the selected subject. 
 </p>
 Figure 8:
