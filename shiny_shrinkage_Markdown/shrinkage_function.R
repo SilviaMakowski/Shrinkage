@@ -211,7 +211,8 @@ shrinkage_app <- function() {
         print(px2, position=c(0.1, 0, 1, 0.53))
         })
       
-    }
+    },
+    options = list(height=800)
   )
 }
 

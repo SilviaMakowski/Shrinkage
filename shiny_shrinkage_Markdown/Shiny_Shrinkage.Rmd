@@ -1,13 +1,15 @@
 ---
 title: "<h2>Shrinkage - Application and Tutorial</h2>"
-author: "Silvia Makowski, Alexander Dietz, & Reinhold Kliegl"
+author:
+- name: Silvia Makowski, Alexander Dietz, & Reinhold Kliegl
+  affiliation: University of Potsdam, Germany
 runtime: shiny
 output: html_document
 ---
 </br>
 This R Markdown document is made **interactive** using Shiny. The code for the application can be found in the R script **shrinkage_function.R**.
 
-```{r echo=FALSE}
+```{r, echo=FALSE}
 source("shrinkage_function.R")
 shrinkage_app()
 ```
@@ -124,3 +126,10 @@ Hohenstein, S. & Kliegl, R. (2013). Simulation of Factorial Mixed-Model Designs 
 Kliegl, R., Masson, M. E. J, & Richter, E. M. (2010). A linear mixed model analysis of masked repetition priming. *Visual Cognition, 18(5)*, 655-681. 
 </br>
 Kliegl, R., Wei, P., Dambacher, M., Yan, M. & Zhou, X. (2011). Experimental effects and individual differences in linear mixed models: estimating the relationship between spatial, object and attraction effects in visual attention. *Frontiers in Psychology, 2*, 1-12.
+</br>
+</br>
+**Corresponding author:**</br>
+<p align="justify">
+Address: University of Potsdam, Department of Psychology, Building 14, Room 4.04, Karl-Liebknecht-Str. 24-25, 14476 Potsdam, Germany. </br>
+E-mail address: kliegl@uni-potsdam.de (Reinhold Kliegl).
+ </p>
