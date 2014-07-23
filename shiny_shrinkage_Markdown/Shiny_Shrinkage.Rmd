@@ -131,5 +131,6 @@ Kliegl, R., Wei, P., Dambacher, M., Yan, M. & Zhou, X. (2011). Experimental effe
 **Corresponding author**</br>
 <p align="justify">
 Address: University of Potsdam, Department of Psychology, Building 14, Room 4.04, Karl-Liebknecht-Str. 24-25, 14476 Potsdam, Germany. </br>
-E-mail address: kliegl@uni-potsdam.de (Reinhold Kliegl).
+E-mail address: kliegl@uni-potsdam.de (Reinhold Kliegl).</br>
+Potsdam Mind Research Repository: http://read.psych.uni-potsdam.de/pmr2/
  </p>
