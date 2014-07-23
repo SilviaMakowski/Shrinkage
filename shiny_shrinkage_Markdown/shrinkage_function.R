@@ -78,6 +78,7 @@ shrinkage_app <- function() {
       
       # Sidebar with slider input
       sidebarPanel(
+        
         sliderInput("nsubjects", 
                     "Number of subjects:", 
                     min = 0, 
@@ -104,15 +105,29 @@ shrinkage_app <- function() {
                     "Standard deviation for selected subject (red):", 
                     min = 0, 
                     max = 200, 
-                    value = 100)
+                    value = 100),
+        
+        hr(),
+        textOutput("counter")
       ),
       
       # Show caterpillar plot and scatterplots
       mainPanel(
         plotOutput("effectPlot",width = "800px", height = "600px")
       )
-      ), 
+    ), 
+    
     server = function(input, output) {
+      
+      output$counter <- renderText({
+          if (!file.exists("counter.Rdata")) counter <- 0
+          if (file.exists("counter.Rdata")) load(file="counter.Rdata")
+          counter <- counter + 1
+          
+          save(counter, file="counter.Rdata")     
+          paste0("Hits: ", counter)
+        })
+      
       output$effectPlot <- renderPlot({
         if (input$nobs<2) {
           stop('Not enough observations: random-effects parameters and residual variance unidentifiable. 
