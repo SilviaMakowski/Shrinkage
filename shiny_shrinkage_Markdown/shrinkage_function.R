@@ -15,6 +15,20 @@ library(lattice)
 source("dotplot.RK.R")
 source("mixedDesign.R")
 
+
+googleAnalytics <- function(){
+  HTML("<script>
+               (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+               })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+             
+             ga('create', 'UA-53162359-1', 'auto');
+             ga('send', 'pageview');
+             
+             </script>")
+}
+
 # means, standard deviations and correlations for mixedDesign derived from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2010).
 means <- matrix(c(358,392,406,403), ncol=4)
 standevAcrossSubjects <- 60
@@ -105,28 +119,17 @@ shrinkage_app <- function() {
                     "Standard deviation for selected subject (red):", 
                     min = 0, 
                     max = 200, 
-                    value = 100),
-        
-        hr(),
-        textOutput("counter")
+                    value = 100)
       ),
       
       # Show caterpillar plot and scatterplots
       mainPanel(
-        plotOutput("effectPlot",width = "800px", height = "600px")
+        plotOutput("effectPlot",width = "800px", height = "600px"),
+        googleAnalytics()
       )
     ), 
     
     server = function(input, output) {
-      
-      output$counter <- renderText({
-          if (!file.exists("counter.Rdata")) counter <- 0
-          if (file.exists("counter.Rdata")) load(file="counter.Rdata")
-          counter <- counter + 1
-          
-          save(counter, file="counter.Rdata")     
-          paste0("Hits: ", counter)
-        })
       
       output$effectPlot <- renderPlot({
         if (input$nobs<2) {
