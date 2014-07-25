@@ -16,7 +16,7 @@ shrinkage_app()
 
 <h3> Tutorial </h3>
 <p align="justify">
-This application simulates a classical experiment of visual attention: the two-rectangle cueing paradigm (Egly et al., 1994). Attentional selection of visual information has been conceptualized as space-based, as object-based, and as being due to an attraction back to the original fixation location. These effects are replicated with simulated RT differences between four experimental conditions of the two-rectangle cueing paradigm and analyzed with a linear mixed model (LMM) using the lme4 package (Bates et al., 2014). For more information on the underlying experimental design, we refer to Kliegl et al. (2011).</p>
+This application simulates a classical experiment of visual attention: the two-rectangle cueing paradigm (Egly et al., 1994). Attentional selection of visual information has been conceptualized as space-based (Posner, 1980), as object-based (Egly et al., 1994), and as being due to an attraction back to the original fixation location (Zhou, Chu, Li, & Zhan, 2006). These effects are replicated with simulated RT differences between four experimental conditions of the two-rectangle cueing paradigm and analyzed with a linear mixed model (LMM) using the lme4 package (Bates et al., 2014). For more information on the underlying experimental design, we refer to Kliegl et al. (2011).</p>
 <p align="justify">
 The data will be simulated using mixedDesign() and rnorm() functions. The input for these functions can be specified using the different sliders in the shiny shrinkage application. The following section will outline the functionality of each slider:</p>
 <p align="justify">
@@ -126,6 +126,10 @@ Hohenstein, S. & Kliegl, R. (2013). Simulation of Factorial Mixed-Model Designs 
 Kliegl, R., Masson, M. E. J, & Richter, E. M. (2010). A linear mixed model analysis of masked repetition priming. *Visual Cognition, 18(5)*, 655-681. 
 </br>
 Kliegl, R., Wei, P., Dambacher, M., Yan, M. & Zhou, X. (2011). Experimental effects and individual differences in linear mixed models: estimating the relationship between spatial, object and attraction effects in visual attention. *Frontiers in Psychology, 2*, 1-12.
+</br>
+Posner, M.I. (1980). Orienting of attention. *Quarterly Journal of Experimental Psychology, 32*, 3-25.
+</br>
+Zhou, X., Chu, H., Li, X., & Zhan, Y. (2006). Center of mass attracts attention. *Neuroreport, 17*, 85-88.
 </br>
 </br>
 **Corresponding author**</br>
