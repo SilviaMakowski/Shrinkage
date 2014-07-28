@@ -6,8 +6,9 @@ author:
 runtime: shiny
 output: html_document
 ---
-</br>
-This R Markdown document is made **interactive** using Shiny.
+<p align="justify">
+This interactive R Markdown document contains an application and tutorial, which can be used for illustrating shrinkage of observed data toward the estimated population mean in linear mixed models. LMM analyses are based on simulated data using mixedDesign() function (Hohenstein & Kliegl, 2013). Means, standard deviations and correlations used in mixedDesign() are calculated from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2011) using the two-rectangle cueing paradigm (Egly, Driver & Rafal, 1994). These values are listed in the tutorial section. </p> 
+                  
 
 ```{r, echo=FALSE}
 source("shrinkage_function.R")
@@ -16,9 +17,14 @@ shrinkage_app()
 
 <h3> Tutorial </h3>
 <p align="justify">
-This application simulates a classical experiment of visual attention: the two-rectangle cueing paradigm (Egly et al., 1994). Attentional selection of visual information has been conceptualized as space-based (Posner, 1980), as object-based (Egly et al., 1994), and as being due to an attraction back to the original fixation location (Zhou, Chu, Li, & Zhan, 2006). These effects are replicated with simulated RT differences between four experimental conditions of the two-rectangle cueing paradigm and analyzed with a linear mixed model (LMM) using the lme4 package (Bates et al., 2014). For more information on the underlying experimental design, we refer to Kliegl et al. (2011).</p>
+This application simulates a classical experiment of visual attention: the two-rectangle cueing paradigm (Egly et al., 1994). Attentional selection of visual information has been conceptualized as space-based (Posner, 1980), as object-based (Egly et al., 1994), and as being due to an attraction back to the original fixation location (Zhou, Chu, Li, & Zhan, 2006). These effects are replicated with simulated RT differences between four experimental conditions of the two-rectangle cueing paradigm and analyzed with a linear mixed model (LMM) using the lme4 package (Bates et al., 2014). For more information on the underlying experimental design, we refer to Kliegl et al. (2011).
+</p>
+The data will be simulated using mixedDesign() and rnorm() functions. 
+</br>
+
+</br>
 <p align="justify">
-The data will be simulated using mixedDesign() and rnorm() functions. The input for these functions can be specified using the different sliders in the shiny shrinkage application. The following section will outline the functionality of each slider:</p>
+The input for these functions can be specified using the different sliders in the shiny shrinkage application. The following section will outline the functionality of each slider:</p>
 <p align="justify">
 **Number of subjects:** The purpose of this slider is to define the number of subjects for the experiment. The mixedDesign() function generates four mean values per subject.
 <p align="justify">
