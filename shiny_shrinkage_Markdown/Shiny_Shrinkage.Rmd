@@ -10,7 +10,7 @@ output: html_document
 This interactive R Markdown document contains an application and tutorial, which can be used for illustrating shrinkage of observed data toward the estimated population mean in linear mixed models. LMM analyses are based on simulated data using mixedDesign() function (Hohenstein & Kliegl, 2013). Means, standard deviations and correlations used in mixedDesign() are calculated from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2011) using the two-rectangle cueing paradigm (Egly, Driver & Rafal, 1994). These values are listed in the tutorial section. </p> 
                   
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE}
 source("shrinkage_function.R")
 shrinkage_app()
 ```

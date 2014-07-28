@@ -31,7 +31,7 @@ googleAnalytics <- function(){
 
 # means, standard deviations and correlations for mixedDesign derived from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2010).
 means <- matrix(c(358,392,406,403), ncol=4)
-standevAcrossSubjects <- 60
+standevAcrossSubjects <- matrix(c(48,61,59,62), ncol=4)
 correlations <- matrix(c(1, .91, .88, .84, 
                          .91, 1, .95, .96, 
                          .88, .95, 1, .96,
@@ -118,7 +118,8 @@ shrinkage_app <- function() {
                     "Standard deviation for selected subject (red):", 
                     min = 0, 
                     max = 200, 
-                    value = 100)
+                    value = 100),
+        submitButton("RUN")
       ),
       
       # Show caterpillar plot and scatterplots
