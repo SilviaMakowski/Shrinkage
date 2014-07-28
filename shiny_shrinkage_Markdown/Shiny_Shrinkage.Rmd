@@ -18,6 +18,7 @@ shrinkage_app()
 <h3> Tutorial </h3>
 <p align="justify">
 This application simulates a classical experiment of visual attention: the two-rectangle cueing paradigm (Egly et al., 1994). Attentional selection of visual information has been conceptualized as space-based (Posner, 1980), as object-based (Egly et al., 1994), and as being due to an attraction back to the original fixation location (Zhou, Chu, Li, & Zhan, 2006). These effects are replicated with simulated RT differences between four experimental conditions of the two-rectangle cueing paradigm and analyzed with a linear mixed model (LMM) using the lme4 package (Bates et al., 2014). For more information on the underlying experimental design, we refer to Kliegl et al. (2011).
+</p>
 
 <p align="justify">
 The data will be simulated using mixedDesign() and rnorm() functions. The mixedDesign() function is specified with a within-subject factor with four levels, corresponding to the four experimental conditions: valid (val), same object - different location (sod), different object - same location (dos), and different object - diagonal location (dod). It generates mean values for each experimental condition of each subject, based on the correlations, means and standard deviations calculated from the experimental data by Kliegl et al. (2011). The input values for mixedDesign() are listed in Table 1 and 2. The rnorm() function is using the simulated mean values from mixedDesign() to generate normally distributed observations for each experimental condition for each subject.
