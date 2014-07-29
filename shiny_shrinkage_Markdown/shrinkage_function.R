@@ -30,12 +30,12 @@ googleAnalytics <- function(){
 }
 
 # means, standard deviations and correlations for mixedDesign derived from experimental data by Kliegl, Wei, Dambacher, Yan and Zhou (2010).
-means <- matrix(c(358,392,406,403), ncol=4)
-standevAcrossSubjects <- matrix(c(48,61,59,62), ncol=4)
-correlations <- matrix(c(1, .91, .88, .84, 
-                         .91, 1, .95, .96, 
-                         .88, .95, 1, .96,
-                         .84, .96, .96, 1), nrow=4, ncol=4, byrow=TRUE)
+means <- matrix(c(350,390,400,400), ncol=4)
+standevAcrossSubjects <- 60
+correlations <- matrix(c(1, .9, .9, .8, 
+                         .9, 1, .9, .9, 
+                         .9, .9, 1, .9,
+                         .8, .9, .9, 1), nrow=4, ncol=4, byrow=TRUE)
 
 # Linear Mixed Model
 build_model <- function(dat){

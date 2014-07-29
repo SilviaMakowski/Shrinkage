@@ -17,38 +17,25 @@ shrinkage_app()
 
 <h3> Tutorial </h3>
 <p align="justify">
-This application simulates a classical experiment of visual attention: the two-rectangle cueing paradigm (Egly et al., 1994). Attentional selection of visual information has been conceptualized as space-based (Posner, 1980), as object-based (Egly et al., 1994), and as being due to an attraction back to the original fixation location (Zhou, Chu, Li, & Zhan, 2006). These effects are replicated with simulated RT differences between four experimental conditions of the two-rectangle cueing paradigm and analyzed with a linear mixed model (LMM) using the lme4 package (Bates et al., 2014). For more information on the underlying experimental design, we refer to Kliegl et al. (2011).
+This application simulates a classical experiment of visual attention: the two-rectangle cueing paradigm (Egly et al., 1994). Briefly, in this experiment subjects had to detect a target that occurred at one of the two ends of two rectangles. Thus, there were four possible target locations. The target locations were cued by a brief flash either validly (1 condition) or invalidly (3 conditions) at these four locations. Thus, (1) the target occurred at the cued location, (2) the target occurred at the same rectangle, but at its other end as the cue, (3) the target occurred at the other rectangle, but at the same physical distance from the cue as in the previous condition, and (4) the target occurred at the other rectangle, diagonally across from the cue location. Aside from the overall mean RT, there are three experimental effects relating to the differences between the four conditions. Specifically, the difference between (2) and (1) estimates to the spatial effect (Posner, 1980), the difference between (3) and (2) estimates the object effect (Egly et al., 1994), and the difference between (3) and (4) estimates the gravitation effect (Zhou et al., 2006). These effects are replicated with simulated RT differences between four experimental conditions of the two-rectangle cueing paradigm and analyzed with a linear mixed model (LMM) using the lme4 package (Bates et al., 2014). For more information on the underlying experimental design, we refer to Kliegl et al. (2011).
 </p>
 
 <p align="justify">
-The data will be simulated using mixedDesign() and rnorm() functions. The mixedDesign() function is specified with a within-subject factor with four levels, corresponding to the four experimental conditions: valid (val), same object - different location (sod), different object - same location (dos), and different object - diagonal location (dod). It generates mean values for each experimental condition of each subject, based on the correlations, means and standard deviations calculated from the experimental data by Kliegl et al. (2011). The input values for mixedDesign() are listed in Table 1 and 2. The rnorm() function is using the simulated mean values from mixedDesign() to generate normally distributed observations for each experimental condition for each subject.
+The mixedDesign() and rnorm() functions generate raw data that simulate the experimental results. The input for the mixedDesign() function are the (rounded) means for the four conditions (i.e., 350, 390, 400, and 400 ms), a standard deviation of 60 ms, and the (rounded) correlations between the four measures (i.e., cue-target relation is a within-subject factor with four levels; Table 1). Data are generated as normally distributed observations for each experimental condition for each subject. 
 </p>
 
-Table 1: Correlations between levels of within-subject factor
+Table 1: Correlations between the four levels of the within-subject factor
 ```{r, echo=FALSE}
 ## table of correlations between levels of within subject factor
-corr <- matrix(c(1, .91, .88, .84, 
-                .91, 1, .95, .96, 
-                .88, .95, 1, .96,
-                .84, .96, .96, 1), nrow=4, ncol=4, byrow=TRUE)
+corr <- matrix(c(1, .9, .9, .8, 
+                .9, 1, .9, .9, 
+                .9, .9, 1, .9,
+                .8, .9, .9, 1), nrow=4, ncol=4, byrow=TRUE)
 
 colnames(corr) <- c("val", "sod", "dos", "dod")
 rownames(corr) <- c("val", "sod", "dos", "dod")
 
 as.table(corr, col.names=T, row.names=T)
-```
-
-Table 2: Means and standard deviations for each level of within-subject factor across all subjects
-```{r, echo=FALSE}
-## table of correlations between levels of within subject factor
-means <- matrix(c(358,392,406,403), ncol=4)
-standevAcrossSubjects <- matrix(c(48,61,59,62), ncol=4)
-means_stand <- matrix(c(means,standevAcrossSubjects),ncol=2,nrow=4)
-
-colnames(means_stand) <- c("M","SD")
-rownames(means_stand) <- c("val", "sod", "dos", "dod")
-
-as.table(means_stand,col.names=T,row.names=T)
 ```
 
 </br>
@@ -95,7 +82,7 @@ Figure 3:
 
 <h5> Standard deviation within each subject and within each condition</h5>
 <p align="justify">
-In the following examples (Figure 4 & 5), we varied the standard deviation within each subject for all subjects simultaneously. (Note that for these examples, the two sliders for **selected subject (red)**  need to be set to the same values as the corresponding sliders for all subjects). The following figure shows the increase in shrinkage when the standard deviation within each subject is increased relative to the reference configuration (Figure 1). Even more importantly, we note that the correlation for spatial and attraction effect increases substantiallyfor this setting, that is the black dots cluster along a negative regression slope. Such a larger correlation parameter may indicate that the complexity of the model is out of sync with what is supported by the data. Indeed, if the standard deviation within each subject is increased to 200, the conditional modes for both correlation parameters fall on straight lines, indicating perfect correlations. In this case, the model is definitely overparameterized; in other words the data no longer support estimation of such a complex model. 
+In the following examples (Figure 4 & 5), we varied the standard deviation within each subject for all subjects simultaneously. (Note that for these examples, the two sliders for **selected subject (red)**  need to be set to the same values as the corresponding sliders for all subjects). The following figure shows the increase in shrinkage when the standard deviation within each subject is increased relative to the reference configuration (Figure 1). Even more importantly, we note that the correlation for spatial and attraction effect increases substantially for this setting, that is the black dots cluster along a negative regression slope. Such a larger correlation parameter may indicate that the complexity of the model is out of sync with what is supported by the data. Indeed, if the standard deviation within each subject is increased to 200, the conditional modes for both correlation parameters fall on straight lines, indicating perfect correlations. In this case, the model is definitely overparameterized; in other words the data no longer support estimation of such a complex model. 
 </p>
 Figure 4:
 </br>
@@ -121,7 +108,7 @@ Figure 6:
  <img src="Figure_6.png" height="600px" width="700px" />
 </br>
 <p align="justify">
-Conversely, doubling the number of data for this subject results in a decrease in shrinkage for the selected subject (red):
+Conversely, doubling the number of data for this subject compared to all subjects results in a decrease in shrinkage for the selected subject (red):
 </p>
 Figure 7:
 </br>
@@ -131,14 +118,14 @@ Figure 7:
 Both a decrease and increase in number of observations for the selected subject strongly influenced the shrinkage of this subject's data, while the data of the remaining subjects remained largely unaffected. What happens if we change the number of data  (i.e., both the number of subjects and the number of observations per subject) of the entire sample relative to those of the selected subject? If the number of observations for all subjects is reduced, increasing the number of observations for the selected subject not only reduces shrinkage for this subject's means, but also for the means of all subjects. The smaller the number of observations for all subjects, the stronger will be the influence of one subject's data.
 </p>
 <p align="justify">
-An illustration of this pattern is provided in Figures 8 and 9. For both configurations, first we reduced the number of observations for all subjects to half of those in the reference configuration (Figure 1). Figures 8 (identical with Figure 2) and 9  differ only in the number of observations for the selected subject. 
+An illustration of this pattern is provided in Figures 8 and 9. For both configurations, first we reduced the number of observations for all subjects relative to the reference configuration (Figure 1). Figures 8 (identical with Figure 2) and 9  differ only in the number of observations for the selected subject. 
 </p>
 Figure 8:
 </br>
  <img src="Figure_8.png" height="600px" width="700px" />
 </br>
 <p align="justify">
-As already mentioned above, when the number of observations for all subjects is small, doubling the number of observations for one subject decreases the effect of shrinkage both on the selected subject's means (Figure 9).
+As already mentioned above, when the number of observations for all subjects is small, increasing the number of observations for one subject decreases the effect of shrinkage both on the selected subject's mean and the means of all subjects (Figure 9).
 </p>
 Figure 9:
 </br>
