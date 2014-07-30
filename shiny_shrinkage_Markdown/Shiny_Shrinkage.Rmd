@@ -21,24 +21,9 @@ This application simulates a classical experiment of visual attention: the two-r
 </p>
 
 <p align="justify">
-The mixedDesign() and rnorm() functions generate raw data that simulate the experimental results. The input for the mixedDesign() function are the (rounded) means for the four conditions (i.e., 350, 390, 400, and 400 ms), a standard deviation of 60 ms, and the (rounded) correlations between the four measures (i.e., cue-target relation is a within-subject factor with four levels; Table 1). Data are generated as normally distributed observations for each experimental condition for each subject. 
+The mixedDesign() and rnorm() functions generate raw data that simulate the experimental results. The input for the mixedDesign() function are the (rounded) means for the four conditions (i.e., 350, 390, 400, and 400 ms), a standard deviation of 60 ms, and the (rounded) correlations between the four measures (i.e., cue-target relation is a within-subject factor with four levels). The correlation between RTs in the valid cued-target relation (condition 1) and RTs in the condition where cue and target occurred diagonally across each other (condition 4) was .80; all other correlations were .90. Data are generated as normally distributed observations for each experimental condition for each subject. 
 </p>
 
-Table 1: Correlations between the four levels of the within-subject factor
-```{r, echo=FALSE}
-## table of correlations between levels of within subject factor
-corr <- matrix(c(1, .9, .9, .8, 
-                .9, 1, .9, .9, 
-                .9, .9, 1, .9,
-                .8, .9, .9, 1), nrow=4, ncol=4, byrow=TRUE)
-
-colnames(corr) <- c("val", "sod", "dos", "dod")
-rownames(corr) <- c("val", "sod", "dos", "dod")
-
-as.table(corr, col.names=T, row.names=T)
-```
-
-</br>
 <p align="justify">
 The input for these functions can be specified using the different sliders in the shiny shrinkage application. The following section will outline the functionality of each slider:</p>
 <p align="justify">
