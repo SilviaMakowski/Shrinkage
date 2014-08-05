@@ -145,3 +145,6 @@ Address: University of Potsdam, Department of Psychology, Building 14, Room 4.04
 E-mail address: kliegl@uni-potsdam.de (Reinhold Kliegl).</br>
 Potsdam Mind Research Repository: http://read.psych.uni-potsdam.de/pmr2/
  </p>
+ 
+[![DOI](https://zenodo.org/badge/5450/SilviaMakowski/Shrinkage.png)](http://dx.doi.org/10.5281/zenodo.11172)
+
